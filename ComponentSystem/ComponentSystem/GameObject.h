@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include "Tag.hpp"
 
+class Component;
+
 class GameObject
 {
 public:
@@ -20,10 +22,35 @@ public:
 	void SetTag(const Tag aTag);
 	const Tag GetTag() const;
 
+	template<typename T>
+	T* AddComponent()
+	{
+
+	}
+
+	template<typename T>
+	void RemoveComponent()
+	{
+
+	}
+
+	template<typename T>
+	const bool HasComponent()
+	{
+
+	}
+
+
 private:
+	friend class ComponentAdmin;
+
+	void Reset();
+	void OnDestroy();
+	void OnCreate();
+
+	std::vector<Component*> myComponents;
+
 	bool myIsActive = true;
 	std::string myName = "";
 	Tag myTag;
-
-	size_t myGameObjectID = -1;
 };

@@ -42,6 +42,13 @@ namespace CommonUtilities
 		template<typename T>
 		T* EmblaceBack()
 		{
+			if (myEmptyIndexes.size() != 0)
+			{
+				T* newT = new (&myData[myEmptyIndexes.back() * myElementSize]) T();
+				myEmptyIndexes.pop_back();
+				return newT;
+			}
+
 			if (myNrOfElements >= myMaxNrOfElements)
 			{
 				Grow<T>();
@@ -54,7 +61,9 @@ namespace CommonUtilities
 		template<typename T>
 		void Remove(T* aMemAdress)
 		{
-			myEmptyIndexes.push_back();
+			size_t newPtr = &aMemAdress - &myData;
+			myEmptyIndexes.push_back(newPtr);
+			aMemAdress->~T();
 		}
 
 		template<typename T>
@@ -86,14 +95,21 @@ namespace CommonUtilities
 
 		const size_t Size() const { return myNrOfElements - myEmptyIndexes.size(); };
 
+		const size_t GetMaxIndex() const { return myNrOfElements; }
+
 		template<typename T>
 		T* Get(size_t anIndex)
 		{
 			return reinterpret_cast<T*>(&myData[anIndex * myElementSize]);
 		}
 
+		const std::vector<size_t>& GetEmptyIndexes() const
+		{
+			return myEmptyIndexes;
+		}
+
 	private:
-		std::vector<unsigned int> myEmptyIndexes{};
+		std::vector<size_t> myEmptyIndexes{};
 
 		size_t myMaxNrOfElements = 0;
 		size_t myElementSize = 0;

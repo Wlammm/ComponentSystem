@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "Component.h"
 
 const bool GameObject::IsActive() const
 {
@@ -20,8 +21,48 @@ const Tag GameObject::GetTag() const
 	return myTag;
 }
 
+void GameObject::Reset()
+{
+	myComponents.clear();
+	myIsActive = true;
+	myName = "";
+	myTag = Tag::Untagged;
+}
+
+void GameObject::OnDestroy()
+{
+	for (int i = 0; i < myComponents.size(); ++i)
+	{
+		myComponents[i]->OnDestroy();
+	}
+}
+
+void GameObject::OnCreate()
+{
+	for (int i = 0; i < myComponents.size(); ++i)
+	{
+		myComponents[i]->OnCreate();
+	}
+}
+
 void GameObject::SetActive(bool isActive)
 {
+	if (!isActive && myIsActive)
+	{
+		for (int i = 0; i < myComponents.size(); ++i)
+		{
+			myComponents[i]->OnDisable();
+		}
+	}
+
+	if (isActive && !myIsActive)
+	{
+		for (int i = 0; i < myComponents.size(); ++i)
+		{
+			myComponents[i]->OnEnable();
+		}
+	}
+
 	myIsActive = isActive;
 }
 

@@ -1,15 +1,53 @@
 #include "Component.h"
 
-Component::Component() { }
+void Component::SetActive(const bool aState)
+{
+	if (!aState && myIsActive)
+	{
+		OnDisable();
+	}
 
-Component::~Component() { }
+	if (aState && !myIsActive)
+	{
+		OnEnable();
+	}
+
+	myIsActive = aState;
+}
+
+const bool Component::IsActive() const
+{
+	return myIsActive;
+}
+
+GameObject* Component::GetGameObject() const
+{
+	return myGameObject;
+}
+
+void Component::Reset()
+{
+	myGameObject = nullptr;
+	myComponentSignature = {};
+	myIsActive = true;
+}
 
 void Component::Update() { }
 
 void Component::LateUpdate() { }
 
-void Component::OnRender() { }
-
 void Component::OnCreate() { }
 
 void Component::OnDestroy() { }
+
+void Component::OnEnable() { }
+
+void Component::OnDisable() { }
+
+void Component::OnCollision(GameObject* anOther) { }
+
+void Component::OnTriggerEnter(GameObject* anOther) { }
+
+void Component::OnTriggerExit(GameObject* anOther) { }
+
+void Component::OnTrigger(GameObject* anOther) { }
