@@ -1,183 +1,52 @@
 #pragma once
 
-#include "Types.hpp"
-#include <vector>
+#include <string>
 #include <unordered_map>
+#include "Types.h"
 #include "OpaqueVector.hpp"
-#include <typeinfo>
-#include "Component.h"
-#include "GameObject.h"
+
+class GameObject;
 
 class ComponentAdmin
 {
 public:
-	ComponentAdmin()
+	ComponentAdmin();
+	~ComponentAdmin();
+
+	void Init();
+
+	void Update();
+	void LateUpdate();
+
+	template<typename T>
+	const unsigned int GetComponentIndex()
 	{
-		ourInstance = this;
+		std::string typeName = typeid(T).name();
+
+		if (myComponentToIndex.find(typeName) != myComponentToIndex.end())
+		{
+			return myComponentToIndex[typeName];
+		}
+
+		myComponentToIndex[typeName] = myComponents.size();
+		CU::OpaqueVector vec = myComponents.emplace_back();
+		vec.Init<T>(MAX_COMPONENTS_OF_TYPE);
+		return myComponentToIndex[typeName];
 	}
 
-	~ComponentAdmin()
-	{
-		ourInstance = nullptr;
-	}
+	GameObject* CreateGameObject();
+	void RemoveGameObject(GameObject* anObject);
 
-	static ComponentAdmin* GetInstance()
-	{
-		return ourInstance;
-	}
+private:
+	std::unordered_map<std::string, unsigned int> myComponentToIndex;
+	std::vector<CU::OpaqueVector> myComponents;
+
+	CU::OpaqueVector myGameObjects;
+
+public:
+	static ComponentAdmin* GetInstance();
 
 private:
 	static ComponentAdmin* ourInstance;
 
-public:
-	//ComponentAdmin() = default;
-	//~ComponentAdmin() = default;
-
-	void Init()
-	{
-		myGameObjects.Init<GameObject>(MAX_GAMEOBJECTS);
-	}
-
-	template<typename T>
-	void RegisterComponent()
-	{
-		std::string typeName = typeid(T).name();
-
-		if (myComponents.find(typeName) == myComponents.end())
-		{
-			CU::OpaqueVector opVec{};
-			opVec.Init<T>(MAX_COMPONENTS);
-
-			myComponents[typeName] = opVec;
-			myComponentSignatures.insert({ typeName, myNextComponentType });
-			++myNextComponentType;
-			return;
-		}
-
-		assert(false && "Component already registered.");
-	}
-
-	template<typename T>
-	T* AddComponent(GameObject* ob)
-	{
-		std::string typeName = typeid(T).name();
-		assert(myComponents.find(typeName) != myComponents.end() && "Component not registered.");
-		assert(myComponents[typeName].Size() < MAX_COMPONENTS && "Too many components of size. Try increasing MAX_COMPONENTS in Types.hpp");
-
-		T* comp = myComponents[typeName].EmblaceBack();
-		comp->Reset();
-		comp->myComponentSignature = GetComponentSignature<T>();
-		comp->myGameObject = ob;
-		comp->OnCreate();
-		return comp;
-	}
-
-	template<typename T>
-	Signature GetComponentSignature()
-	{
-		std::string typeName = typeid(T).name();
-		assert(myComponentSignatures.find(typeName) != myComponentSignatures.end());
-
-		return myComponentSignatures[typeName];
-	}
-
-	template<typename T>
-	void RemoveComponent(GameObject* ob)
-	{
-		Signature componentSignature = GetComponentSignature<T>();
-		std::string typeName = typeid(T).name();
-		for (int i = 0; i < ob->myComponents.size(); ++i)
-		{
-			if (ob->myComponents[i]->myComponentSignature == componentSignature)
-			{
-				ob->mySignature.set(GetComponentSignature<T>(), false);
-				Component* comp = ob->myComponents[i];
-				comp->OnDestroy();
-				myComponents[typeName].Remove(comp);
-			}
-		}
-	}
-	
-	void RemoveComponent(Component* aComponent)
-	{
-		for (auto& vec : myComponents)
-		{
-			Component* firstComp = vec.second.Get<Component>(0);
-			Component* lastComp = vec.second.Get<Component>(vec.second.GetMaxIndex());
-
-			if (&aComponent < &lastComp && &aComponent > &firstComp)
-			{
-				aComponent->OnDestroy();
-				vec.second.Remove(aComponent);
-				return;
-			}
-		}
-	}
-
-	template<typename T>
-	CU::OpaqueVector& GetAllComponentsOfType()
-	{
-		std::string typeName = typeid(T).name();
-		return myComponents[typeName];
-	}
-
-	void Update()
-	{
-		for (auto& comp : myComponents)
-		{
-			for (size_t i = 0; i < comp.second.GetMaxIndex(); ++i)
-			{
-				const std::vector<size_t>& emptyIndexes = comp.second.GetEmptyIndexes();
-				if (std::find(emptyIndexes.begin(), emptyIndexes.end(), i) == emptyIndexes.end())
-				{
-					comp.second.Get<Component>(i)->Update();
-				}
-			}
-		}
-	}
-
-	void LateUpdate()
-	{
-		for (auto& comp : myComponents)
-		{
-			for (size_t i = 0; i < comp.second.GetMaxIndex(); ++i)
-			{
-				const std::vector<size_t>& emptyIndexes = comp.second.GetEmptyIndexes();
-				if (std::find(emptyIndexes.begin(), emptyIndexes.end(), i) == emptyIndexes.end())
-				{
-					comp.second.Get<Component>(i)->LateUpdate();
-				}
-			}
-		}
-	}
-
-	GameObject* CreateGameObject()
-	{
-		assert(myGameObjects.Size() < MAX_GAMEOBJECTS && "GameObject limit reached. Try increasing MAX_GAMEOBJECTS in Types.hpp");
-
-		GameObject* ob = myGameObjects.EmblaceBack<GameObject>();
-		ob->Reset();
-		ob->OnCreate();
-		return ob;
-	}
-
-	void DestroyGameObject(GameObject* anObject)
-	{
-		anObject->OnDestroy();
-		
-		for (int i = 0; i < anObject->myComponents.size(); ++i)
-		{
-			RemoveComponent(anObject->myComponents[i]);
-		}
-
-		myGameObjects.Remove(anObject);
-	}
-
-private:
-	size_t myNextComponentType = { 0 };
-	std::unordered_map<std::string, Signature> myComponentSignatures;
-	std::unordered_map<std::string, CU::OpaqueVector> myComponents;
-	CU::OpaqueVector myGameObjects;
 };
-
-ComponentAdmin* ComponentAdmin::ourInstance = nullptr;

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Types.hpp"
-#include "ComponentAdmin.h"
-
 class GameObject;
 
 class Component
@@ -20,26 +17,19 @@ protected:
 	template<typename T>
 	T* AddComponent()
 	{
-		return ComponentAdmin::GetInstance()->AddComponent<T>(myGameObject);
+		
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
-		ComponentAdmin::GetInstance()->RemoveComponent<T>(myGameObject);
+		
 	}
 
 	template<typename T>
 	const bool HasComponent()
 	{
-		Signature sign = ComponentAdmin::GetComponentSignature<T>();
-
-		if (sign == myGameObject)
-		{
-			return true;
-		}
-
-		return false;
+		
 	}
 
 	// Runs once per frame.
@@ -68,12 +58,8 @@ protected:
 	virtual void OnTrigger(GameObject* anOther);
 
 private:
-	friend class ComponentAdmin;
 	friend class GameObject;
 
-	void Reset();
-
 	GameObject* myGameObject = nullptr;
-	Signature myComponentSignature;
 	bool myIsActive = true;
 };

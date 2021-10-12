@@ -25,13 +25,6 @@ GameObject* Component::GetGameObject() const
 	return myGameObject;
 }
 
-void Component::Reset()
-{
-	myGameObject = nullptr;
-	myComponentSignature = {};
-	myIsActive = true;
-}
-
 void Component::Update() { }
 
 void Component::LateUpdate() { }

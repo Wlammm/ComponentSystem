@@ -30,6 +30,9 @@
     <ClCompile Include="PrinterComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentAdmin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -38,23 +41,20 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentAdmin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tag.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OpaqueVector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentArray.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PrinterComponent.h">
       <Filter>TestComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentAdmin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

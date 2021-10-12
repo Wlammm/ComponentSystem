@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "ComponentAdmin.h"
 
 const bool GameObject::IsActive() const
 {
@@ -19,6 +20,11 @@ void GameObject::SetTag(const Tag aTag)
 const Tag GameObject::GetTag() const
 {
 	return myTag;
+}
+
+void GameObject::Destroy(GameObject* aGameObject)
+{
+	ComponentAdmin::GetInstance()->RemoveGameObject(aGameObject);
 }
 
 void GameObject::Reset()

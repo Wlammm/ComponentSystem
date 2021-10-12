@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Types.hpp"
 #include <vector>
 #include <string>
 #include <unordered_map>
 #include "Tag.hpp"
-#include "Component.h"
+
+class Component;
 
 class GameObject
 {
@@ -22,29 +22,21 @@ public:
 	void SetTag(const Tag aTag);
 	const Tag GetTag() const;
 
+	void Destroy(GameObject* aGameObject);
+
 	template<typename T>
 	T* AddComponent()
 	{
-		return ComponentAdmin::GetInstance()->AddComponent<T>(this);
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
-		ComponentAdmin::GetInstance()->RemoveComponent<T>(this);
 	}
 
 	template<typename T>
 	const bool HasComponent()
 	{
-		Signature componentSignature = ComponentAdmin::GetInstance()->GetComponentSignature<T>();
-
-		if (componentSignature == mySignature)
-		{
-			return true;
-		}
-
-		return false;
 	}
 
 
@@ -56,7 +48,6 @@ private:
 	void OnCreate();
 
 	std::vector<Component*> myComponents;
-	Signature mySignature;
 
 	bool myIsActive = true;
 	std::string myName = "";
