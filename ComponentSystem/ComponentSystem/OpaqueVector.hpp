@@ -61,7 +61,7 @@ namespace CommonUtilities
 		template<typename T>
 		void Remove(T* aMemAdress)
 		{
-			size_t newPtr = &aMemAdress - &myData;
+			size_t newPtr = &aMemAdress - reinterpret_cast<T**>(&myData);
 			myEmptyIndexes.push_back(newPtr);
 			aMemAdress->~T();
 		}

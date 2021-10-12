@@ -8,9 +8,6 @@
 #include "Component.h"
 #include "GameObject.h"
 
-class GameObject;
-
-
 class ComponentAdmin
 {
 public:
@@ -76,7 +73,7 @@ public:
 	}
 
 	template<typename T>
-	void GetComponentSignature()
+	Signature GetComponentSignature()
 	{
 		std::string typeName = typeid(T).name();
 		assert(myComponentSignatures.find(typeName) != myComponentSignatures.end());
@@ -93,9 +90,26 @@ public:
 		{
 			if (ob->myComponents[i]->myComponentSignature == componentSignature)
 			{
+				ob->mySignature.set(GetComponentSignature<T>(), false);
 				Component* comp = ob->myComponents[i];
 				comp->OnDestroy();
 				myComponents[typeName].Remove(comp);
+			}
+		}
+	}
+	
+	void RemoveComponent(Component* aComponent)
+	{
+		for (auto& vec : myComponents)
+		{
+			Component* firstComp = vec.second.Get<Component>(0);
+			Component* lastComp = vec.second.Get<Component>(vec.second.GetMaxIndex());
+
+			if (&aComponent < &lastComp && &aComponent > &firstComp)
+			{
+				aComponent->OnDestroy();
+				vec.second.Remove(aComponent);
+				return;
 			}
 		}
 	}
@@ -145,21 +159,6 @@ public:
 		ob->Reset();
 		ob->OnCreate();
 		return ob;
-	}
-
-	void RemoveComponent(Component* aComponent)
-	{
-		for (auto& vec : myComponents)
-		{
-			Component* firstComp = vec.second.Get<Component>(0);
-			Component* lastComp = vec.second.Get<Component>(vec.second.GetMaxIndex());
-
-			if (&aComponent < &lastComp && &aComponent > &firstComp)
-			{
-				vec.second.Remove(aComponent);
-				return;
-			}
-		}
 	}
 
 	void DestroyGameObject(GameObject* anObject)
