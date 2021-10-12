@@ -27,16 +27,19 @@ public:
 	template<typename T>
 	T* AddComponent()
 	{
+
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
+
 	}
 
 	template<typename T>
 	const bool HasComponent()
 	{
+
 	}
 
 
@@ -47,7 +50,7 @@ private:
 	void OnDestroy();
 	void OnCreate();
 
-	std::vector<Component*> myComponents;
+	std::unordered_map<std::string, unsigned int> myComponents;
 
 	bool myIsActive = true;
 	std::string myName = "";

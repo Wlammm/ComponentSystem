@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ComponentAdmin.h"
 #include "PrinterComponent.h"
+#include "GameObject.h"
 
 int main()
 {
@@ -8,6 +9,8 @@ int main()
 	admin->Init();
 
 	GameObject* gameObject = admin->CreateGameObject();
+	gameObject->SetName("tst");
+	admin->RemoveGameObject(gameObject);
 	while (true)
 	{
 		admin->Update();

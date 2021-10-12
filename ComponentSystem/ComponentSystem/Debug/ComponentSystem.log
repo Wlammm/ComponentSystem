@@ -1,9 +1,5 @@
 ﻿  ComponentAdmin.cpp
   GameObject.cpp
-C:\Users\william.arnback\Documents\GitHub\ComponentSystem\ComponentSystem\ComponentSystem\GameObject.cpp(40,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\william.arnback\Documents\GitHub\ComponentSystem\ComponentSystem\ComponentSystem\GameObject.cpp(48,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\william.arnback\Documents\GitHub\ComponentSystem\ComponentSystem\ComponentSystem\GameObject.cpp(58,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\william.arnback\Documents\GitHub\ComponentSystem\ComponentSystem\ComponentSystem\GameObject.cpp(66,21): warning C4018: '<': signed/unsigned mismatch
   Main.cpp
   Generating Code...
-  ComponentSystem.vcxproj -> C:\Users\william.arnback\Documents\GitHub\ComponentSystem\ComponentSystem\Debug\ComponentSystem.exe
+  ComponentSystem.vcxproj -> C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\Debug\ComponentSystem.exe

@@ -37,39 +37,17 @@ void GameObject::Reset()
 
 void GameObject::OnDestroy()
 {
-	for (int i = 0; i < myComponents.size(); ++i)
-	{
-		myComponents[i]->OnDestroy();
-	}
+	
 }
 
 void GameObject::OnCreate()
 {
-	for (int i = 0; i < myComponents.size(); ++i)
-	{
-		myComponents[i]->OnCreate();
-	}
+	
 }
 
 void GameObject::SetActive(bool isActive)
 {
-	if (!isActive && myIsActive)
-	{
-		for (int i = 0; i < myComponents.size(); ++i)
-		{
-			myComponents[i]->OnDisable();
-		}
-	}
-
-	if (isActive && !myIsActive)
-	{
-		for (int i = 0; i < myComponents.size(); ++i)
-		{
-			myComponents[i]->OnEnable();
-		}
-	}
-
-	myIsActive = isActive;
+	
 }
 
 void GameObject::SetName(const std::string& aName)

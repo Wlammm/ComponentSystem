@@ -49,21 +49,17 @@ namespace CommonUtilities
 				return newT;
 			}
 
-			if (myNrOfElements >= myMaxNrOfElements)
-			{
-				Grow<T>();
-			}
 			T* newT = new (&myData[myNrOfElements * myElementSize]) T();
 			myNrOfElements++;
 			return newT;
 		}
 
 		template<typename T>
-		void Remove(T* aMemAdress)
+		void Remove(const unsigned int anIndex)
 		{
-			size_t newPtr = &aMemAdress - reinterpret_cast<T**>(&myData);
-			myEmptyIndexes.push_back(newPtr);
-			aMemAdress->~T();
+			myEmptyIndexes.push_back(anIndex);
+			T* ptr = myData[anIndex * myElementSize];
+			ptr->~T();
 		}
 
 		template<typename T>
