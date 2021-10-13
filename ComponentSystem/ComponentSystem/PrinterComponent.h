@@ -5,7 +5,7 @@
 class PrinterComponent : public Component
 {
 public:
-
+	~PrinterComponent();
 
 	void Update() override;
 

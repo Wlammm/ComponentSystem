@@ -5,8 +5,8 @@ class GameObject;
 class Component
 {
 public:
-	Component() = delete;
-	virtual ~Component() = default;
+	Component() = default;
+	virtual ~Component();
 
 	void SetActive(const bool aState);
 	const bool IsActive() const;

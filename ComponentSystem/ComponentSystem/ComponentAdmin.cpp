@@ -60,7 +60,7 @@ void ComponentAdmin::RemoveGameObject(GameObject* anObject)
 
 	for (auto& comp : myComponentsOnGameObjects[anObject->GetGameObjectID()])
 	{
-		myComponents[myComponentToIndex[comp.first]].Remove<void>(comp.second);
+		myComponents[myComponentToIndex[comp.first]].Remove<Component>(comp.second);
 	}
 }
 

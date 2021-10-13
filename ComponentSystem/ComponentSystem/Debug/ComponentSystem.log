@@ -4,24 +4,6 @@ C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\Component
 C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\ComponentAdmin.cpp(35,20): warning C4018: '<': signed/unsigned mismatch
   GameObject.cpp
   Main.cpp
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\OpaqueVector.hpp(47,69): error C2280: 'PrinterComponent::PrinterComponent(void)': attempting to reference a deleted function
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\PrinterComponent.h(13): message : compiler has generated 'PrinterComponent::PrinterComponent' here
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\PrinterComponent.h(13,1): message : 'PrinterComponent::PrinterComponent(void)': function was implicitly deleted because a base class invokes a deleted or inaccessible function 'Component::Component(void)'
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\Component.h(8,2): message : 'Component::Component(void)': function was explicitly deleted
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\ComponentAdmin.h(46): message : see reference to function template instantiation 'T *CommonUtilities::OpaqueVector::EmblaceBack<T>(size_t &)' being compiled
-          with
-          [
-              T=PrinterComponent
-          ]
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\Main.cpp(15): message : see reference to function template instantiation 'T *ComponentAdmin::AddComponent<PrinterComponent>(GameObject *)' being compiled
-          with
-          [
-              T=PrinterComponent
-          ]
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\OpaqueVector.hpp(53,61): error C2280: 'PrinterComponent::PrinterComponent(void)': attempting to reference a deleted function
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\PrinterComponent.h(13): message : compiler has generated 'PrinterComponent::PrinterComponent' here
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\PrinterComponent.h(13,1): message : 'PrinterComponent::PrinterComponent(void)': function was implicitly deleted because a base class invokes a deleted or inaccessible function 'Component::Component(void)'
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\Component.h(8,2): message : 'Component::Component(void)': function was explicitly deleted
   PrinterComponent.cpp
-C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\PrinterComponent.cpp(5,1): error C2600: 'PrinterComponent::~PrinterComponent': cannot define a compiler-generated special member function (must be declared in the class first)
   Generating Code...
+  ComponentSystem.vcxproj -> C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\Debug\ComponentSystem.exe
