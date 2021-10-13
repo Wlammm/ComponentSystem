@@ -5,8 +5,8 @@ class GameObject;
 class Component
 {
 public:
-	Component() = default;
-	~Component() = default;
+	Component() = delete;
+	virtual ~Component() = default;
 
 	void SetActive(const bool aState);
 	const bool IsActive() const;
@@ -58,6 +58,7 @@ protected:
 	virtual void OnTrigger(GameObject* anOther);
 
 private:
+	friend class ComponentAdmin;
 	friend class GameObject;
 
 	GameObject* myGameObject = nullptr;

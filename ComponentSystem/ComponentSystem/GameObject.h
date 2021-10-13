@@ -24,10 +24,12 @@ public:
 
 	void Destroy(GameObject* aGameObject);
 
+	const size_t& GetGameObjectID() const;
+
 	template<typename T>
 	T* AddComponent()
 	{
-
+		return nullptr;
 	}
 
 	template<typename T>
@@ -39,9 +41,8 @@ public:
 	template<typename T>
 	const bool HasComponent()
 	{
-
+		return false;
 	}
-
 
 private:
 	friend class ComponentAdmin;
@@ -50,9 +51,8 @@ private:
 	void OnDestroy();
 	void OnCreate();
 
-	std::unordered_map<std::string, unsigned int> myComponents;
-
+	size_t myID = -1;
 	bool myIsActive = true;
 	std::string myName = "";
-	Tag myTag;
+	Tag myTag = Tag::Untagged;
 };

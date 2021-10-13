@@ -27,12 +27,17 @@ void GameObject::Destroy(GameObject* aGameObject)
 	ComponentAdmin::GetInstance()->RemoveGameObject(aGameObject);
 }
 
+const size_t& GameObject::GetGameObjectID() const
+{
+	return myID;
+}
+
 void GameObject::Reset()
 {
-	myComponents.clear();
 	myIsActive = true;
 	myName = "";
 	myTag = Tag::Untagged;
+	myID = -1;
 }
 
 void GameObject::OnDestroy()

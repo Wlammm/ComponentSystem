@@ -40,16 +40,18 @@ namespace CommonUtilities
 		}
 
 		template<typename T>
-		T* EmblaceBack()
+		T* EmblaceBack(size_t& outIndex)
 		{
 			if (myEmptyIndexes.size() != 0)
 			{
 				T* newT = new (&myData[myEmptyIndexes.back() * myElementSize]) T();
+				outIndex = myEmptyIndexes.back();
 				myEmptyIndexes.pop_back();
 				return newT;
 			}
 
 			T* newT = new (&myData[myNrOfElements * myElementSize]) T();
+			outIndex = myNrOfElements;
 			myNrOfElements++;
 			return newT;
 		}
@@ -58,7 +60,7 @@ namespace CommonUtilities
 		void Remove(const unsigned int anIndex)
 		{
 			myEmptyIndexes.push_back(anIndex);
-			T* ptr = myData[anIndex * myElementSize];
+			T* ptr = reinterpret_cast<T*>(&myData[anIndex * myElementSize]);
 			ptr->~T();
 		}
 
@@ -99,7 +101,7 @@ namespace CommonUtilities
 			return reinterpret_cast<T*>(&myData[anIndex * myElementSize]);
 		}
 
-		const std::vector<size_t>& GetEmptyIndexes() const
+		std::vector<size_t>& GetEmptyIndexes()
 		{
 			return myEmptyIndexes;
 		}
