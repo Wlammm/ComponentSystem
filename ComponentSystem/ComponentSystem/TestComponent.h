@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Component.h"
+#include <string>
 
 class TestComponent : public Component
 {
 public:
-	TestComponent();
+	TestComponent() = default;
+	TestComponent(std::string aWrite);
 
 private:
 

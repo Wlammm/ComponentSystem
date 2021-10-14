@@ -2,16 +2,23 @@
 #include "ComponentAdmin.h"
 #include "PrinterComponent.h"
 #include "GameObject.h"
+#include "TestComponent.h"
 
 int main()
 {
 	ComponentAdmin* admin = new ComponentAdmin();
 	admin->Init();
 
-	GameObject* gameObject = Instantiate();
+	GameObject* gameObject = GameObject::Instantiate();
 	gameObject->SetName("tst");
-	Destroy(gameObject);
-	gameObject = Instantiate();
+	gameObject->SetTag(Tag::Player);
+
+
+	GameObject::Destroy(gameObject);
+	gameObject = GameObject::Instantiate();
+	gameObject->AddComponent<TestComponent>("gjfdirsaojasdgofiedswaghjniju");
+	auto p = gameObject->GetComponent<TestComponent>();
+
 	while (true)
 	{
 		admin->Update();

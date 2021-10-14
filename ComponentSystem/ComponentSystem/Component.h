@@ -14,23 +14,25 @@ public:
 
 	GameObject* GetGameObject() const;
 
+	void operator delete(void*) = delete;
+
 protected:
-	template<typename T>
-	T* AddComponent()
+	template<typename T, typename... Args>
+	T* AddComponent(Args&&... params)
 	{
-		return ComponentAdmin::GetInstance()->AddComponent<T>(myGameObject->GetGameObjectID());
+		return ComponentAdmin::GetInstance()->AddComponent<T>(myGameObject->GetGameObjectID(), params);
+	}
+
+	template<typename T>
+	T* GetComponent()
+	{
+		return ComponentAdmin::GetInstance()->GetComponent<T>(myGameObject->GetGameObjectID());
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
 		ComponentAdmin::GetInstance()->RemoveComponent<T>(myGameObject->GetGameObjectID());
-	}
-
-	template<typename T>
-	const bool HasComponent()
-	{
-		return ComponentAdmin::GetInstance()->HasComponent<T>(myGameObject->GetGameObjectID());
 	}
 
 	// Runs once per frame.

@@ -1,6 +1,7 @@
 #include "TestComponent.h"
 
-TestComponent::TestComponent()
+#include <iostream>
+TestComponent::TestComponent(std::string afjdskl)
 {
-
+	std::cout << afjdskl;
 }

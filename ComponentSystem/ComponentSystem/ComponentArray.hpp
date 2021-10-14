@@ -19,11 +19,12 @@ template<typename T>
 class ComponentArray : public IComponentArray
 {
 public:
-	T* InsertData(GameObjectID anEntity)
+	template<typename... Args>
+	T* InsertData(GameObjectID anEntity, Args&&... params)
 	{
 		assert(myEntityToIndexMap.find(anEntity) == myEntityToIndexMap.end() && "Component already exists on gameobject.");
 
-		T aComponent = T();
+		T aComponent = T(std::forward<Args>(params)...);
 
 		int newIndex = mySize;
 		myEntityToIndexMap[anEntity] = newIndex;
@@ -55,11 +56,11 @@ public:
 		myIndexToEntityMap.erase(indexOfLastElement);
 	}
 
-	T& GetData(GameObjectID anEntity)
+	T* GetData(GameObjectID anEntity)
 	{
 		assert(myEntityToIndexMap.find(anEntity) != myEntityToIndexMap.end() && "Component does not exist on gameobject.");
 
-		return myComponentArray[myEntityToIndexMap[anEntity]];
+		return &myComponentArray[myEntityToIndexMap[anEntity]];
 	}
 	
 	const bool HasData(GameObjectID anEntity)

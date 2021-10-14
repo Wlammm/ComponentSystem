@@ -22,16 +22,6 @@ const Tag GameObject::GetTag() const
 	return myTag;
 }
 
-GameObject* GameObject::Instantiate()
-{
-	return ComponentAdmin::GetInstance()->CreateGameObject();
-}
-
-void GameObject::Destroy(GameObject* aGameObject, const float aTime)
-{
-	ComponentAdmin::GetInstance()->RemoveGameObject(aGameObject, aTime);
-}
-
 const size_t& GameObject::GetGameObjectID() const
 {
 	return myID;

@@ -10,6 +10,7 @@ void PrinterComponent::Update()
 void PrinterComponent::OnEnable()
 {
 	std::cout << "enabled";
+
 }
 
 void PrinterComponent::OnDisable()

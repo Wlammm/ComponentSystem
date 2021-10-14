@@ -10,8 +10,8 @@
 class ComponentManager
 {
 public:
-	template<typename T>
-	T* AddComponent(const GameObjectID anEntity)
+	template<typename T, typename... Args>
+	T* AddComponent(const GameObjectID anEntity, Args&&... params)
 	{
 		std::string typeName = typeid(T).name();
 		if (myComponentTypes.find(typeName) == myComponentTypes.end())
@@ -19,7 +19,7 @@ public:
 			RegisterComponent<T>();
 		}
 
-		return GetComponentArray<T>()->InsertData(anEntity);
+		return GetComponentArray<T>()->InsertData(anEntity, std::forward<Args>(params)...);
 	}
 
 	void RemoveComponent(const std::string& aTypeName, const GameObjectID aID)
@@ -40,7 +40,7 @@ public:
 	}
 
 	template<typename T>
-	T& GetComponent(const GameObjectID anEntity)
+	T* GetComponent(const GameObjectID anEntity)
 	{
 		return GetComponentArray<T>()->GetData(anEntity);
 	}

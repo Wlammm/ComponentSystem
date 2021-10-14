@@ -10,21 +10,24 @@
 class Component;
 class GameObject;
 
-static GameObject* Instantiate()
-{
-	return ComponentAdmin::GetInstance()->CreateGameObject();
-}
-
-static void Destroy(GameObject* anObject, const float aTime = 0)
-{
-	ComponentAdmin::GetInstance()->RemoveGameObject(anObject, aTime);
-}
 
 class GameObject
 {
 public:
 	GameObject() = default;
 	~GameObject() = default;
+
+	void operator delete(void*) = delete;
+	
+	static GameObject* Instantiate()
+	{
+		return ComponentAdmin::GetInstance()->CreateGameObject();
+	}
+	
+	static void Destroy(GameObject* anObject, const float aTime = 0)
+	{
+		ComponentAdmin::GetInstance()->RemoveGameObject(anObject, aTime);
+	}
 
 	void SetActive(bool isActive);
 	const bool IsActive() const;
@@ -35,27 +38,24 @@ public:
 	void SetTag(const Tag aTag);
 	const Tag GetTag() const;
 
-	GameObject* Instantiate();
-	void Destroy(GameObject* aGameObject, const float aTime = 0);
-
 	const GameObjectID& GetGameObjectID() const;
 
-	template<typename T>
-	T* AddComponent()
+	template<typename T, typename... Args>
+	T* AddComponent(Args&&... params)
 	{
-		return ComponentAdmin::GetInstance()->AddComponent<T>(myID);
+		return ComponentAdmin::GetInstance()->AddComponent<T>(myID, std::forward<Args>(params)...);
+	}
+
+	template<typename T>
+	T* GetComponent()
+	{
+		return ComponentAdmin::GetInstance()->GetComponent<T>(myID);
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
 		ComponentAdmin::GetInstance()->RemoveComponent<T>(myID);
-	}
-
-	template<typename T>
-	const bool HasComponent()
-	{
-		return ComponentAdmin::GetInstance()->HasComponent<T>(myID);
 	}
 
 private:

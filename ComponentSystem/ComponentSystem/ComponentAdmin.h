@@ -22,16 +22,22 @@ public:
 
 	void SetActive(GameObject* ob, const bool aState);
 
-	template<typename T>
-	T* AddComponent(const GameObjectID aID)
+	template<typename T, typename... Args>
+	T* AddComponent(const GameObjectID aID, Args&&... params)
 	{
 		GameObject* toLookFor = &myBase[aID];
 		assert(std::find(myActiveGameObjects.begin(), myActiveGameObjects.end(), toLookFor) != myActiveGameObjects.end() && "Trying to add component to non active gameobject.");
 
-		T* comp =  myComponentManager.AddComponent<T>(aID);
+		T* comp =  myComponentManager.AddComponent<T>(aID, std::forward<Args>(params)...);
 		comp->myGameObject = &myBase[aID];
 		comp->myIsActive = true;
 		return comp;
+	}
+
+	template<typename T>
+	T* GetComponent(const GameObjectID aID)
+	{
+		return myComponentManager.GetComponent<T>(aID);
 	}
 
 	template<typename T>
@@ -39,12 +45,6 @@ public:
 	{
 		std::string typeName = typeid(T).name();
 		myComponentsToRemove.push_back({ typeName, aID });
-	}
-
-	template<typename T>
-	const bool HasComponent(const GameObjectID aID)
-	{
-		return myComponentManager.HasComponent<T>(aID);
 	}
 
 	GameObject* CreateGameObject();
