@@ -88,6 +88,11 @@ void ComponentAdmin::RemoveGameObject(GameObject* anObject, const float aTime)
 	myGameObjectsToBeDeleted[anObject] = aTime;
 }
 
+const std::vector<GameObject*>& ComponentAdmin::GetAllGameObjects() const
+{
+	return myActiveGameObjects;
+}
+
 ComponentAdmin* ComponentAdmin::GetInstance()
 {
 	return ourInstance;

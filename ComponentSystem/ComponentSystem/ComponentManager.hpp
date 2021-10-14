@@ -45,6 +45,12 @@ public:
 		return GetComponentArray<T>()->GetData(anEntity);
 	}
 
+	template<typename T>
+	std::vector<GameObjectID> GetGameObjectsWithComponent()
+	{
+		return GetComponentArray<T>()->GetGameObjects();
+	}
+
 	void EntityDestroyed(const GameObjectID anEntity)
 	{
 		for (auto const& pair : myComponentArrays)

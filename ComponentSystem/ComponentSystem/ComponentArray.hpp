@@ -106,6 +106,18 @@ public:
 		}
 	}
 
+	std::vector<GameObjectID> GetGameObjects()
+	{
+		std::vector<GameObjectID> returnVec;
+
+		for (auto& e : myEntityToIndexMap)
+		{
+			returnVec.push_back(e.first);
+		}
+
+		return returnVec;
+	}
+
 private:
 	std::array<T, MAX_GAMEOBJECTS> myComponentArray{};
 	std::unordered_map<GameObjectID, int> myEntityToIndexMap{};

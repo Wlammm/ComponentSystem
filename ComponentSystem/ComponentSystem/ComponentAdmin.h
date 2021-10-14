@@ -50,6 +50,22 @@ public:
 	GameObject* CreateGameObject();
 	void RemoveGameObject(GameObject* anObject, const float aTime);
 
+	const std::vector<GameObject*>& GetAllGameObjects() const;
+
+	template<typename T>
+	const std::vector<GameObject*> GetGameObjectsWithComponent()
+	{
+		std::vector<GameObjectID> gameObjectIDSWithComponent = myComponentManager.GetGameObjectsWithComponent<T>();
+
+		std::vector<GameObject*> gameObjects;
+		for (int i = 0; i < gameObjectIDSWithComponent.size(); ++i)
+		{
+			gameObjects.push_back(&myBase[gameObjectIDSWithComponent[i]]);
+		}
+
+		return gameObjects;
+	}
+
 private:
 
 	GameObject* myBase;

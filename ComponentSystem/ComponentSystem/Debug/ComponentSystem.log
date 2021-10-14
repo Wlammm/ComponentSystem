@@ -1,15 +1,1 @@
-﻿  Component.cpp
-  The contents of <any> are available only with C++17 or later.
-  ComponentAdmin.cpp
-  The contents of <any> are available only with C++17 or later.
-C:\Users\william.arnback\Documents\GitHub\ComponentSystem\ComponentSystem\ComponentSystem\ComponentAdmin.cpp(52,20): warning C4018: '<': signed/unsigned mismatch
-  GameObject.cpp
-  The contents of <any> are available only with C++17 or later.
-  Main.cpp
-  The contents of <any> are available only with C++17 or later.
-  PrinterComponent.cpp
-  The contents of <any> are available only with C++17 or later.
-  TestComponent.cpp
-  The contents of <any> are available only with C++17 or later.
-  Generating Code...
-  ComponentSystem.vcxproj -> C:\Users\william.arnback\Documents\GitHub\ComponentSystem\ComponentSystem\Debug\ComponentSystem.exe
+﻿  ComponentSystem.vcxproj -> C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\Debug\ComponentSystem.exe
