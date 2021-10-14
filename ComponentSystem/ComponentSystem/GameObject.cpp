@@ -22,9 +22,14 @@ const Tag GameObject::GetTag() const
 	return myTag;
 }
 
-void GameObject::Destroy(GameObject* aGameObject)
+GameObject* GameObject::Instantiate()
 {
-	ComponentAdmin::GetInstance()->RemoveGameObject(aGameObject);
+	return ComponentAdmin::GetInstance()->CreateGameObject();
+}
+
+void GameObject::Destroy(GameObject* aGameObject, const float aTime)
+{
+	ComponentAdmin::GetInstance()->RemoveGameObject(aGameObject, aTime);
 }
 
 const size_t& GameObject::GetGameObjectID() const
@@ -37,22 +42,11 @@ void GameObject::Reset()
 	myIsActive = true;
 	myName = "";
 	myTag = Tag::Untagged;
-	myID = -1;
-}
-
-void GameObject::OnDestroy()
-{
-	
-}
-
-void GameObject::OnCreate()
-{
-	
 }
 
 void GameObject::SetActive(bool isActive)
 {
-	
+	ComponentAdmin::GetInstance()->SetActive(this, isActive);
 }
 
 void GameObject::SetName(const std::string& aName)

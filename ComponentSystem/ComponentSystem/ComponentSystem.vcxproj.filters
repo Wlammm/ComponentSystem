@@ -27,11 +27,14 @@
     <ClCompile Include="Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PrinterComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentAdmin.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PrinterComponent.cpp">
+      <Filter>TestComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent.cpp">
+      <Filter>TestComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +58,15 @@
     </ClInclude>
     <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentArray.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h">
+      <Filter>TestComponents</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

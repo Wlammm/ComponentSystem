@@ -1,12 +1,13 @@
 #pragma once
 
-class GameObject;
+#include "ComponentAdmin.h"
+#include "GameObject.h"
 
 class Component
 {
 public:
 	Component() = default;
-	virtual ~Component();
+	virtual ~Component() = default;
 
 	void SetActive(const bool aState);
 	const bool IsActive() const;
@@ -17,19 +18,19 @@ protected:
 	template<typename T>
 	T* AddComponent()
 	{
-		
+		return ComponentAdmin::GetInstance()->AddComponent<T>(myGameObject->GetGameObjectID());
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
-		
+		ComponentAdmin::GetInstance()->RemoveComponent<T>(myGameObject->GetGameObjectID());
 	}
 
 	template<typename T>
 	const bool HasComponent()
 	{
-		
+		return ComponentAdmin::GetInstance()->HasComponent<T>(myGameObject->GetGameObjectID());
 	}
 
 	// Runs once per frame.
@@ -49,7 +50,6 @@ protected:
 
 	// Runs once a collision with this object has happened.
 	virtual void OnCollision(GameObject* anOther);
-
 	// Runs the frame this object enters a trigger.
 	virtual void OnTriggerEnter(GameObject* anOther);
 	// Runs the frame this object leaves a trigger.
@@ -58,6 +58,8 @@ protected:
 	virtual void OnTrigger(GameObject* anOther);
 
 private:
+	template<typename T>
+	friend class ComponentArray;
 	friend class ComponentAdmin;
 	friend class GameObject;
 

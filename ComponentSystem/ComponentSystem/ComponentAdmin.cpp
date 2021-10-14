@@ -12,56 +12,80 @@ ComponentAdmin::ComponentAdmin()
 ComponentAdmin::~ComponentAdmin()
 {
 	ourInstance = nullptr;
+
+	delete[] myBase;
+	myBase = nullptr;
 }
 
 void ComponentAdmin::Init()
 {
-	myGameObjects.Init<GameObject>();
+	myBase = new GameObject[MAX_GAMEOBJECTS];
+
+	for (int i = 0; i < MAX_GAMEOBJECTS; ++i)
+	{
+		myGameObjects.push(&myBase[i]);
+		myBase[i].myID = i;
+	}
 }
 
 void ComponentAdmin::Update()
 {
-	for (int i = 0; i < myActiveGameObjects.size(); ++i)
+	for (const auto& comp : myComponentsToRemove)
 	{
-		for (auto comps : myComponentsOnGameObjects[myActiveGameObjects[i]])
+		myComponentManager.RemoveComponent(comp.first, comp.second);
+	}
+	myComponentsToRemove.clear();
+
+	std::vector<GameObject*> removedKeys;
+	for (auto& val : myGameObjectsToBeDeleted)
+	{
+		val.second -= 0; // REPLACE WITH DELTATIME
+
+		if (val.second <= 0)
 		{
-			myComponents[myComponentToIndex[comps.first]].Get<Component>(comps.second)->Update();
+			myGameObjects.push(val.first);
+			myActiveGameObjects.erase(std::remove(myActiveGameObjects.begin(), myActiveGameObjects.end(), val.first));
+			myComponentManager.EntityDestroyed(val.first->GetGameObjectID());
+			removedKeys.push_back(val.first);
 		}
 	}
+	for (int i = 0; i < removedKeys.size(); ++i)
+	{
+		myGameObjectsToBeDeleted.erase(removedKeys[i]);
+	}
+
+	myComponentsToRemove.clear();
+
+	myComponentManager.Update();
 }
 
 void ComponentAdmin::LateUpdate()
 {
-	for (int i = 0; i < myActiveGameObjects.size(); ++i)
-	{
-		for (auto comps : myComponentsOnGameObjects[myActiveGameObjects[i]])
-		{
-			myComponents[myComponentToIndex[comps.first]].Get<Component>(comps.second)->LateUpdate();
-		}
-	}
+	myComponentManager.LateUpdate();
+}
+
+void ComponentAdmin::SetActive(GameObject* ob, const bool aState)
+{
+	myComponentManager.SetActive(ob->GetGameObjectID(), aState);
 }
 
 GameObject* ComponentAdmin::CreateGameObject()
 {
-	assert(myGameObjects.GetMaxIndex() - myGameObjects.GetEmptyIndexes().size() < MAX_GAMEOBJECTS && "Max gameobjects reached. Try inreasing MAX_GAMEOBJECTS in types.h");
+	assert(myGameObjects.size() > 0 && "All gameobjects in use. Try increasing MAX_GAMEOBJECTS in types.h");
 
-	size_t id = -1;
-	GameObject* ob = myGameObjects.EmblaceBack<GameObject>(id);
-	ob->Reset();
-	ob->myID = id;
-	myActiveGameObjects.push_back(id);
-	return ob;
+	GameObject* object = myGameObjects.front();
+	myGameObjects.pop();
+
+	object->Reset();
+	myActiveGameObjects.push_back(object);
+	return object;
 }
 
-void ComponentAdmin::RemoveGameObject(GameObject* anObject)
+void ComponentAdmin::RemoveGameObject(GameObject* anObject, const float aTime)
 {
-	myActiveGameObjects.erase(std::remove(myActiveGameObjects.begin(), myActiveGameObjects.end(), anObject->GetGameObjectID()));
-	myGameObjects.Remove<GameObject>(anObject->myID);
+	assert(std::find(myActiveGameObjects.begin(), myActiveGameObjects.end(), anObject) != myActiveGameObjects.end() && "Gameobject is not currently active.");
 
-	for (auto& comp : myComponentsOnGameObjects[anObject->GetGameObjectID()])
-	{
-		myComponents[myComponentToIndex[comp.first]].Remove<Component>(comp.second);
-	}
+	myGameObjectsToBeDeleted[anObject] = aTime;
 }
 
 ComponentAdmin* ComponentAdmin::GetInstance()

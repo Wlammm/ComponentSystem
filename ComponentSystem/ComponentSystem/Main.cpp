@@ -8,12 +8,10 @@ int main()
 	ComponentAdmin* admin = new ComponentAdmin();
 	admin->Init();
 
-	GameObject* gameObject = admin->CreateGameObject();
+	GameObject* gameObject = Instantiate();
 	gameObject->SetName("tst");
-	admin->RemoveGameObject(gameObject);
-	gameObject = admin->CreateGameObject();
-	PrinterComponent* comp = admin->AddComponent<PrinterComponent>(gameObject);
-	admin->RemoveComponent<PrinterComponent>(gameObject);
+	Destroy(gameObject);
+	gameObject = Instantiate();
 	while (true)
 	{
 		admin->Update();

@@ -1,12 +1,18 @@
 #include <iostream>
 #include "PrinterComponent.h"
 
-PrinterComponent::~PrinterComponent()
-{
-	std::cout << "!!!HJKRTEKSGJRDK";
-}
-
 void PrinterComponent::Update()
 {
-	std::cout << "gdfsjklö";
+	std::cout << "Update";
+	RemoveComponent<PrinterComponent>();
+}
+
+void PrinterComponent::OnEnable()
+{
+	std::cout << "enabled";
+}
+
+void PrinterComponent::OnDisable()
+{
+	std::cout << "disabled.";
 }

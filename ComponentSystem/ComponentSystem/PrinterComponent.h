@@ -5,9 +5,10 @@
 class PrinterComponent : public Component
 {
 public:
-	~PrinterComponent();
-
 	void Update() override;
+
+	void OnEnable() override;
+	void OnDisable() override;
 
 private:
 };

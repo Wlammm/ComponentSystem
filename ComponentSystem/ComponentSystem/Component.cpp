@@ -1,9 +1,5 @@
 #include "Component.h"
 
-Component::~Component()
-{
-}
-
 void Component::SetActive(const bool aState)
 {
 	if (!aState && myIsActive)

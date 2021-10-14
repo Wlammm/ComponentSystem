@@ -24,14 +24,18 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PrinterComponent.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentAdmin.h" />
+    <ClInclude Include="ComponentArray.hpp" />
+    <ClInclude Include="ComponentManager.hpp" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="OpaqueVector.hpp" />
     <ClInclude Include="PrinterComponent.h" />
     <ClInclude Include="Tag.hpp" />
+    <ClInclude Include="TestComponent.h" />
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -2,10 +2,12 @@
 
 #include <string>
 #include <unordered_map>
+#include <map>
 #include "Types.h"
-#include "OpaqueVector.hpp"
-#include "Component.h"
-#include "GameObject.h"
+#include "ComponentManager.hpp"
+#include <queue>
+
+class GameObject;
 
 class ComponentAdmin
 {
@@ -18,80 +20,48 @@ public:
 	void Update();
 	void LateUpdate();
 
+	void SetActive(GameObject* ob, const bool aState);
+
 	template<typename T>
-	const size_t GetComponentIndex()
+	T* AddComponent(const GameObjectID aID)
 	{
-		std::string typeName = typeid(T).name();
+		GameObject* toLookFor = &myBase[aID];
+		assert(std::find(myActiveGameObjects.begin(), myActiveGameObjects.end(), toLookFor) != myActiveGameObjects.end() && "Trying to add component to non active gameobject.");
 
-		if (myComponentToIndex.find(typeName) != myComponentToIndex.end())
-		{
-			return myComponentToIndex[typeName];
-		}
-
-		myComponentToIndex[typeName] = myComponents.size();
-		myComponents.push_back(CU::OpaqueVector());
-		myComponents.back().Init<T>(MAX_COMPONENTS_OF_TYPE);
-		return myComponentToIndex[typeName];
+		T* comp =  myComponentManager.AddComponent<T>(aID);
+		comp->myGameObject = &myBase[aID];
+		comp->myIsActive = true;
+		return comp;
 	}
 
 	template<typename T>
-	T* AddComponent(GameObject* ob)
+	void RemoveComponent(const GameObjectID aID)
 	{
-		size_t compTypeIndex = GetComponentIndex<T>();
 		std::string typeName = typeid(T).name();
-
-		size_t gameObjectID = ob->GetGameObjectID();
-
-		size_t compIndex = -1;
-		T* compT = myComponents[compTypeIndex].EmblaceBack<T>(compIndex);
-		Component* comp = static_cast<Component*>(compT);
-		comp->myGameObject = ob;
-
-		assert(myComponentsOnGameObjects[gameObjectID].find(typeName) == myComponentsOnGameObjects[gameObjectID].end() && "Components of type already exists on this gameobject.");
-
-		myComponentsOnGameObjects[gameObjectID][typeName] = compIndex;
-
-		return compT;
+		myComponentsToRemove.push_back({ typeName, aID });
 	}
 
 	template<typename T>
-	void RemoveComponent(GameObject* ob)
+	const bool HasComponent(const GameObjectID aID)
 	{
-		size_t compTypeIndex = GetComponentIndex<T>();
-		std::string typeName = typeid(T).name();
-
-		size_t gameObjectID = ob->GetGameObjectID();
-
-		size_t indexToRemove = -1;
-		for (auto& comp : myComponentsOnGameObjects[gameObjectID])
-		{
-			if (comp.first == typeName)
-			{
-				indexToRemove = comp.second;
-				break;
-			}
-		}
-
-		myComponentsOnGameObjects[gameObjectID].erase(typeName);
-
-		assert(indexToRemove != -1 && "Component does not exist on gameobject.");
-
-		myComponents[myComponentToIndex[typeName]].Remove<void>(indexToRemove);
+		return myComponentManager.HasComponent<T>(aID);
 	}
 
 	GameObject* CreateGameObject();
-	void RemoveGameObject(GameObject* anObject);
+	void RemoveGameObject(GameObject* anObject, const float aTime);
 
 private:
-	std::unordered_map<std::string, unsigned int> myComponentToIndex;
-	std::vector<CU::OpaqueVector> myComponents;
 
-	std::vector<size_t> myActiveGameObjects;
+	GameObject* myBase;
+	std::queue<GameObject*> myGameObjects;
+	std::vector<GameObject*> myActiveGameObjects;
 
-	CU::OpaqueVector myGameObjects;
+	std::map<GameObject*, float> myGameObjectsToBeDeleted;
 
-	// myComponentsOnGameObject[gameObjectID][componentTypeName] -> ID i opaque vectorn.
-	std::unordered_map<size_t, std::unordered_map<std::string, size_t>> myComponentsOnGameObjects;
+	std::vector<std::pair<std::string, GameObjectID>> myComponentsToRemove;
+
+	ComponentManager myComponentManager;
+	
 public:
 	static ComponentAdmin* GetInstance();
 
