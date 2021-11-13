@@ -1,1 +1,17 @@
-﻿  ComponentSystem.vcxproj -> C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\Debug\ComponentSystem.exe
+﻿  Component.cpp
+  The contents of <any> are available only with C++17 or later.
+  ComponentAdmin.cpp
+  The contents of <any> are available only with C++17 or later.
+C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\ComponentAdmin.cpp(52,20): warning C4018: '<': signed/unsigned mismatch
+  GameObject.cpp
+  The contents of <any> are available only with C++17 or later.
+  Main.cpp
+  The contents of <any> are available only with C++17 or later.
+C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\ComponentAdmin.h(61,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\ComponentSystem\Main.cpp(29): message : see reference to function template instantiation 'const std::vector<GameObject *,std::allocator<GameObject *>> ComponentAdmin::GetGameObjectsWithComponent<TestComponent>(void)' being compiled
+  PrinterComponent.cpp
+  The contents of <any> are available only with C++17 or later.
+  TestComponent.cpp
+  The contents of <any> are available only with C++17 or later.
+  Generating Code...
+  ComponentSystem.vcxproj -> C:\Users\willi\Documents\GitHub\Engine\ComponentSystem\ComponentSystem\Debug\ComponentSystem.exe
