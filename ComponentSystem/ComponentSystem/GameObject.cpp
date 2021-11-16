@@ -36,6 +36,7 @@ void GameObject::Reset()
 
 void GameObject::SetActive(bool isActive)
 {
+	myIsActive = isActive;
 	ComponentAdmin::GetInstance()->SetActive(this, isActive);
 }
 
